@@ -5,7 +5,7 @@ import HomeScreen from './pages/HomeScreen';
 
 const App = () => {
   return (
-    <div>
+    <div className="app">
       <HomeScreen />
     </div>
   )

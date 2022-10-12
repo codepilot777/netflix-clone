@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
+import axios from '../../utils/axios';
+import requests from '../../utils/requests';
 import './Banner.css';
 
 const Banner = () => {
+  const [movie, setMovie] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const request = await axios.get(requests.fetchNetflixOriginals);
+      setMovie(
+        request.data.results[
+          Math.floor(Math.random() * request.data.results.length - 1)
+        ]
+      )
+      console.log(request);
+      return request
+    }
+    fetchData();
+  },[])
 
   const truncate = (string, n) => {
     return string?.length > n ? string.substr(0, n-1) + '...' : string
@@ -10,17 +26,17 @@ const Banner = () => {
   return (
     <header className="banner" style={{
       backgroundSize: "cover",
-      backgroundImage: `url('https://www.phoneworld.com.pk/wp-content/uploads/2020/10/seo-watch-free-link-preview.jpg')`,
+      backgroundImage: `url('https://image.tmdb.org/t/p/original${movie?.backdrop_path}')`,
       backgroundPosition: "center center",
     }}>
       <div className="banner__contents">
-        <h1 className="banner__title">Movie Name</h1>
+        <h1 className="banner__title">{movie?.title || movie?.name || movie?.original_name}</h1>
         <div className="banner__buttons">
           <button className="banner__button">Play</button>
           <button className="banner__button">My List</button>
         </div>
         <h1 className="banner__description">{
-          truncate('This is a very long description.This is a very long description..This is a very long description..This is a very long description..This is a very long description..This is a very long description..This is a very long description..This is a very long description..This is a very long description..This is a very long description..This is a very long description..', 150)
+          truncate(movie?.overview, 150)
         }</h1>
       </div>
       <div className="banner__fadeBottom" />
