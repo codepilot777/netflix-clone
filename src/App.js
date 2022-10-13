@@ -29,7 +29,7 @@ const App = () => {
         console.log(user)
       } else {
         // logged out
-        dispatch(logout)
+        dispatch(logout())
       }
     })
 
